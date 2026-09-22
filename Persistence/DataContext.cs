@@ -9,6 +9,8 @@ namespace Persistence
 
         public DbSet<WeatherForecast> WeatherForecasts { get; set; }
 
+        public DbSet<Product> Products { get; set; }
+
         public DataContext()
         {
             DbPath = Path.Join(AppContext.BaseDirectory, "weather.db");
