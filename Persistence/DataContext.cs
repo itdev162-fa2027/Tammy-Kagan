@@ -11,6 +11,10 @@ namespace Persistence
 
         public DbSet<Product> Products { get; set; }
 
+        public DbSet<Order> Orders { get; set; }
+
+public DbSet<OrderItem> OrderItems { get; set; }
+
         public DataContext()
         {
             DbPath = Path.Join(AppContext.BaseDirectory, "weather.db");
@@ -20,5 +24,17 @@ namespace Persistence
         {
             options.UseSqlite($"Data Source={DbPath}");
         }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+    base.OnModelCreating(modelBuilder);
+
+    // Configure Order-OrderItem relationship
+    modelBuilder.Entity<Order>()
+        .HasMany(o => o.OrderItems)
+        .WithOne(oi => oi.Order)
+        .HasForeignKey(oi => oi.OrderId)
+        .OnDelete(DeleteBehavior.Cascade);
+}
     }
 }
